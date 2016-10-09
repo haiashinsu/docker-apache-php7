@@ -64,7 +64,6 @@ RUN wget https://github.com/drush-ops/drush/releases/download/8.1.2/drush.phar \
 EXPOSE 80
 
 VOLUME ["/www", "/etc/apache2/vhost", /var/log/apache2"]
-WORKDIR /www
 
-# Start apache
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["-D", "FOREGROUND"]
+ENTRYPOINT ["apachectl"]
