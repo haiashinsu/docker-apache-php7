@@ -68,5 +68,3 @@ WORKDIR /www
 
 # Start apache
 CMD /usr/sbin/apache2ctl -D FOREGROUND
-
-ENTRYPOINT ["/bin/bash"]
