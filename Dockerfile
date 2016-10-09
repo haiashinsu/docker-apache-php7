@@ -11,10 +11,11 @@ ENV LC_ALL ${DEFAULT_LOCALE}
 # Install packages
 RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get -y install curl git mcrypt wget rsync \
+    && apt-get -y install curl git mcrypt wget \
     && apt-get -y install apache2 php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-sqlite php7.0-bcmath \
     php7.0-mysql php7.0-curl php7.0-json php7.0-cgi \
-    php7.0-pgsql php7.0-gd php7.0-tidy php7.0-cli php7.0-mbstring \
+    php7.0-pgsql php7.0-gd php7.0-tidy php7.0-cli php7.0-mbstring php7.0-iconv \
+    rsync \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,6 +26,7 @@ RUN apt-get update && apt-get -y install krb5-user libpam-krb5
 # Enable mods
 RUN a2enmod php7.0
 RUN a2enmod rewrite
+RUN a2enmod ssl
 
 # Change PHP ini settings
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.0/apache2/php.ini
@@ -42,7 +44,7 @@ ENV APACHE_RUN_USER=www-data \
 
 # Remove default site, replace with own conf
 RUN rm -f sites-enabled/000-default.conf
-ADD config/apache.conf /etc/apache2/sites-enabled/000-default.conf
+ADD config/vhost.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Install Composer
 RUN cd /tmp && curl -sS https://getcomposer.org/installer | php
@@ -66,3 +68,5 @@ WORKDIR /www
 
 # Start apache
 CMD /usr/sbin/apache2ctl -D FOREGROUND
+
+ENTRYPOINT ["/bin/bash"]
