@@ -3,13 +3,18 @@ MAINTAINER haiashinsu
 
 ENV DEFAULT_LOCALE=en_NZ.UTF-8
 
+# Set locale
+RUN locale-gen ${DEFAULT_LOCALE}
+ENV LANG ${DEFAULT_LOCALE}
+ENV LC_ALL ${DEFAULT_LOCALE}
+
 # Install packages
-RUN locale-gen ${DEFAULT_LOCALE} \
-	  && export LANG=${DEFAULT_LOCALE} \
-    && DEBIAN_FRONTEND=noninteractive \
+RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get -y install curl git mcrypt wget rsync \
     && apt-get -y install apache2 php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-sqlite php7.0-bcmath \
+    php7.0-mysql php7.0-curl php7.0-json php7.0-cgi \
+    php7.0-pgsql php7.0-gd php7.0-tidy php7.0-cli php7.0-mbstring \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
