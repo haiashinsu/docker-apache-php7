@@ -31,6 +31,9 @@ RUN a2enmod ssl
 # Change PHP ini settings
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.0/apache2/php.ini
 
+RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf
+RUN a2enconf fqdn
+
 # Prepare Web root and Apache
 RUN mkdir -p /www && \
     chown -R www-data:www-data /www
@@ -63,7 +66,7 @@ RUN wget https://github.com/drush-ops/drush/releases/download/8.1.2/drush.phar \
 
 EXPOSE 80
 
-VOLUME ["/www", "/etc/apache2/vhost", /var/log/apache2"]
+VOLUME ["/www", "/var/log/apache2"]
 
 CMD ["-D", "FOREGROUND"]
 ENTRYPOINT ["apachectl"]
