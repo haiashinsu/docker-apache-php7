@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install apache2 php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-sqlite php7.0-bcmath \
     php7.0-mysql php7.0-curl php7.0-json php7.0-cgi \
     php7.0-pgsql php7.0-gd php7.0-tidy php7.0-cli php7.0-mbstring php7.0-iconv \
-    rsync \
+    php-xml php7.0-intl php7.0-ldap rsync \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
